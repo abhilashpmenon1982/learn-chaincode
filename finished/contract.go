@@ -99,15 +99,15 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 	if function == "transaction" {
 		return t.Transaction(stub, args)
-	} else if function == "create_user" {
-		return t.CreateUser(stub, args)
+	} else if function == "create_contract" {
+		return t.CreateContract(stub, args)
 	}
 
 	return nil, nil
 }
 
 
-func (t *SimpleChaincode) CreateUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) CreateContract(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 4 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 4. customer,provider,period,status to create contract")
@@ -187,7 +187,7 @@ func (t *SimpleChaincode) Transaction(stub shim.ChaincodeStubInterface, args []s
 	contractone.Status = args[2]
 	fmt.Printf("Period = %s, Status = %s\n", contractone.Period, contractone.Status)
 
-	b, err := json.Marshal(contractone.Status)
+	b, err := json.Marshal(contractone)
 	if err != nil {
 		fmt.Println(err)
 		return nil, errors.New("Errors while creating json string for contractone")
